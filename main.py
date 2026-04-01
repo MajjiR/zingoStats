@@ -21,8 +21,7 @@ def get_db_connection():
             connect_timeout=10,
             read_timeout=10,
             write_timeout=10,
-            ssl={"ssl": {}},
-            cursorclass=pymysql.cursors.DictCursor
+            ssl={"ssl": {}}
         )
     except Exception as e:
         st.error(f"Database connection failed: {e}")
