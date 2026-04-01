@@ -9,13 +9,31 @@ from datetime import datetime, timedelta
 import io
 
 
+# def get_db_connection():
+#     return pymysql.connect(
+#         host=st.secrets["DB_HOST"],
+#         user=st.secrets["DB_USER"],
+#         password=st.secrets["DB_PASSWORD"],
+#         database=st.secrets["DB_NAME"]
+#     )
+
 def get_db_connection():
-    return pymysql.connect(
-        host=st.secrets["DB_HOST"],
-        user=st.secrets["DB_USER"],
-        password=st.secrets["DB_PASSWORD"],
-        database=st.secrets["DB_NAME"]
-    )
+    try:
+        return pymysql.connect(
+            host=st.secrets["DB_HOST"],
+            user=st.secrets["DB_USER"],
+            password=st.secrets["DB_PASSWORD"],
+            database=st.secrets["DB_NAME"],
+            port=3306,
+            connect_timeout=10,
+            read_timeout=10,
+            write_timeout=10,
+            ssl={"ssl": {}},  # 🔥 important
+            cursorclass=pymysql.cursors.DictCursor
+        )
+    except Exception as e:
+        st.error(f"DB connection failed: {e}")
+        return None
 
 
 def get_restaurant_stats(start_date=None, end_date=None):
